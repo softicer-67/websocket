@@ -49,5 +49,6 @@ async def websocket_endpoint(websocket: WebSocket):
     count = 1
     while True:
         data = await websocket.receive_text()
-        await websocket.send_text(f"{count}: {data}")
+        # await websocket.send_text(f"{count}: {data}")
+        await websocket.send_json({count: data})
         count += 1
