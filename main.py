@@ -56,7 +56,6 @@ async def websocket_endpoint(websocket: WebSocket):
     ws_connections.append(websocket)
 
     # Отправка стабильного формата ответа
-
     while True:
         # Логика для обновления данных в формате, который нужно отправить
         data = await websocket.receive_text()
