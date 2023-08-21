@@ -43,12 +43,25 @@ async def get():
     return HTMLResponse(html)
 
 
+# Создаем список WebSocket-соединений
+ws_connections = []
+
+
+# Обработчик WebSocket-соединений
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    count = 1
+
+    # Добавляем новое соединение в список
+    ws_connections.append(websocket)
+
+    # Отправка стабильного формата ответа
+
     while True:
+        # Логика для обновления данных в формате, который нужно отправить
         data = await websocket.receive_text()
-        # await websocket.send_text(f"{count}: {data}")
-        await websocket.send_json({count: data})
-        count += 1
+        data = {"message": data}
+
+        # Отправка данных всем клиентам в формате JSON
+        for ws in ws_connections:
+            await ws.send_json(data)
